@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Helpers;
@@ -22,63 +21,41 @@ namespace Infrastructure.Data
 
         public async Task<IEnumerable<Standart>> GetAll()
         {
-            try
-            {
-                return await _context.Standarts.Find(_ => true).ToListAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return await ExecuteAndHandleException<IEnumerable<Standart>>.Execute(async () =>
+                await _context.Standarts.Find(_ => true).ToListAsync());
         }
 
         public async Task<Standart> GetById(string id)
         {
-            try
-            {
-                var internalId = IdParser.GetInternalId(id);
-                return await _context.Standarts.Find(x => x.InternalId == internalId).FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }            
+            return await ExecuteAndHandleException<Standart>.Execute(async () =>
+                {
+                    var internalId = IdParser.GetInternalId(id);
+                    return await _context.Standarts.Find(x => x.InternalId == internalId).FirstOrDefaultAsync();
+                }
+            );
         }
 
         public async Task Add(Standart entity)
         {
-            try
-            {
-                if (entity.InternalId == ObjectId.Empty)
+            await ExecuteAndHandleException.Execute(async () =>
                 {
-                    entity.InternalId = ObjectId.GenerateNewId();
+                    if (entity.InternalId == ObjectId.Empty) entity.InternalId = ObjectId.GenerateNewId();
+                    await _context.Standarts.InsertOneAsync(entity);
                 }
-                await _context.Standarts.InsertOneAsync(entity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            );
         }
 
         public async Task<bool> Delete(string id)
         {
-            try
-            {
-                // TODO: [IS] need to change "id" cield from "Code" to real identifier
-                var deleteResult = await _context.Standarts
-                    .DeleteOneAsync(Builders<Standart>.Filter.Eq("Code", id));
-                return deleteResult.IsAcknowledged
-                       && deleteResult.DeletedCount > 0;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return await ExecuteAndHandleException<bool>.Execute(async () =>
+                {
+                    // TODO: [IS] need to change "id" cield from "Code" to real identifier
+                    var deleteResult = await _context.Standarts
+                        .DeleteOneAsync(Builders<Standart>.Filter.Eq("Code", id));
+                    return deleteResult.IsAcknowledged
+                           && deleteResult.DeletedCount > 0;
+                }
+            );
         }
     }
 }

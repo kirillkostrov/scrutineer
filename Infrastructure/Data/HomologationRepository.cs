@@ -50,5 +50,11 @@ namespace Infrastructure.Data
             // TODO: [IS] ...
             throw new System.NotImplementedException();
         }
+
+        public async Task<Homologation> GetByCode(string homologationCode)
+        {
+            return await ExecuteAndHandleException<Homologation>.Execute(async () =>
+                await _context.Homologations.Find(x => x.Code == homologationCode).FirstOrDefaultAsync());
+        }
     }
 }

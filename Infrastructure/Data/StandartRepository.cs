@@ -57,5 +57,11 @@ namespace Infrastructure.Data
                 }
             );
         }
+        
+        public async Task<Standart> GetByCode(string code)
+        {
+            return await ExecuteAndHandleException<Standart>.Execute(async () =>
+                await _context.Standarts.Find(x => x.Code == code).FirstOrDefaultAsync());
+        }
     }
 }

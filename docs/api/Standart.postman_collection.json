@@ -54,6 +54,36 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "DeleteStandart",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/standarts/182",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"standarts",
+						"182"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

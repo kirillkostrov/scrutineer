@@ -18,5 +18,8 @@ namespace Infrastructure.Data
 
         public IMongoCollection<Standart> Standarts =>
             _database.GetCollection<Standart>("Standart");
+
+        public IMongoCollection<Homologation> Homologations =>
+            _database.GetCollection<Homologation>("Homologation");
     }
 }

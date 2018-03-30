@@ -4,7 +4,7 @@ namespace Core.Entities
 {
     public class HomologationItem : BaseEntity
     {
-        public int Id { get; set; }
+        public int Uid { get; set; }
 
         public byte[] Image { get; set; }
 

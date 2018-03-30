@@ -4,7 +4,7 @@
     {
         public string Name { get; set; }
         
-        public int Id { get; set; }
+        public int Uid { get; set; }
         
         public string Code { get; set; }
         

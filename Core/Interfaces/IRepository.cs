@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace Core.Interfaces
 {
@@ -8,10 +8,10 @@ namespace Core.Interfaces
     {
         Task<IEnumerable<T>> GetAll();
 
-        Task<T> GetById(Guid id);
+        Task<T> GetById(ObjectId id);
 
         Task<T> Add(T entity);
 
-        Task<bool> Delete(Guid id);
+        Task<bool> Delete(ObjectId id);
     }
 }

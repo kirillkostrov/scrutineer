@@ -3,27 +3,46 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.Extensions.Options;
+using Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Infrastructure.Data
 {
-    public class StandartRepository : IRepository<Standart>
+    public class StandartRepository : IStandartRepository
     {
-        public Task<IEnumerable<Standart>> GetAll()
+        private readonly Context _context;
+
+        public StandartRepository(IOptions<Settings> settings)
         {
-            throw new System.NotImplementedException();
+            _context = new Context(settings);
         }
 
-        public Task<Standart> GetById(Guid id)
+        public async Task<IEnumerable<Standart>> GetAll()
+        {
+            try
+            {
+                return await _context.Standarts.Find(_ => true).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public Task<Standart> GetById(ObjectId id)
         {
             throw new NotImplementedException();
         }
 
         public Task<Standart> Add(Standart entity)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Task<bool> Delete(Guid id)
+        public Task<bool> Delete(ObjectId id)
         {
             throw new NotImplementedException();
         }

@@ -64,9 +64,21 @@ namespace Infrastructure.Data
             }
         }
 
-        public Task<bool> Delete(ObjectId id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // TODO: [IS] need to change "id" cield from "Code" to real identifier
+                var deleteResult = await _context.Standarts
+                    .DeleteOneAsync(Builders<Standart>.Filter.Eq("Code", id));
+                return deleteResult.IsAcknowledged
+                       && deleteResult.DeletedCount > 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

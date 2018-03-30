@@ -12,6 +12,6 @@ namespace Core.Interfaces
 
         Task Add(T entity);
 
-        Task<bool> Delete(ObjectId id);
+        Task<bool> Delete(string id);
     }
 }

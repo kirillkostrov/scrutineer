@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace webapi.Controllers
 {
@@ -20,6 +21,15 @@ namespace webapi.Controllers
         public async Task<IEnumerable<Standart>> Get()
         {
             return await _standartRepository.GetAll();
+        }
+
+        [HttpPost]
+        public void Add([FromBody] Standart standart)
+        {
+            _standartRepository.Add(new Standart
+            {
+                Code = standart.Code,
+            });
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Core.Interfaces
     {
         Task<IEnumerable<T>> GetAll();
 
-        Task<T> GetById(ObjectId id);
+        Task<T> GetById(string id);
 
-        Task<T> Add(T entity);
+        Task Add(T entity);
 
         Task<bool> Delete(ObjectId id);
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Helpers;
 using Core.Interfaces;
 using Microsoft.Extensions.Options;
 using Models;
@@ -32,14 +33,35 @@ namespace Infrastructure.Data
             }
         }
 
-        public Task<Standart> GetById(ObjectId id)
+        public async Task<Standart> GetById(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var internalId = IdParser.GetInternalId(id);
+                return await _context.Standarts.Find(x => x.InternalId == internalId).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }            
         }
 
-        public Task<Standart> Add(Standart entity)
+        public async Task Add(Standart entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (entity.InternalId == ObjectId.Empty)
+                {
+                    entity.InternalId = ObjectId.GenerateNewId();
+                }
+                await _context.Standarts.InsertOneAsync(entity);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public Task<bool> Delete(ObjectId id)

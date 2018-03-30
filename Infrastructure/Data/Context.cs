@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Microsoft.Extensions.Options;
 using Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infrastructure.Data

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 
 namespace webapi.Controllers
 {
@@ -28,7 +27,7 @@ namespace webapi.Controllers
         {
             _standartRepository.Add(new Standart
             {
-                Code = standart.Code,
+                Code = standart.Code
             });
         }
     }

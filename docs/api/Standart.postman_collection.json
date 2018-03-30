@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "10577a2a-4530-4c31-a93e-23a11efbfa12",
+		"name": "Standart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddStandart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Code\": \"0-0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/standarts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"standarts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStandarts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5000/api/standarts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"standarts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

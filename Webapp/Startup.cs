@@ -46,7 +46,6 @@ namespace Webapp
         {
             if (env.IsDevelopment())
             {
-                env.ge
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {

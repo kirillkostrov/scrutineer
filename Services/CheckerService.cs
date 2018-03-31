@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
@@ -28,17 +29,47 @@ namespace Services
         {
             var standart = await _standartRepository.GetByCode(standartCode);
             var homologation = await _homologationRepository.GetByCode(homologationCode);
-            if (standart == null && homologation == null) return FailedCheck();
-
-            return SuccessCheck(homologation, standart);
+            
+            if (homologation != null)
+            {
+                return CheckHomologation(homologation);
+            } else if (standart != null)
+            {
+                return CheckStandart(standart);
+            }
+            
+            return FailedCheck();
         }
 
-        private static CheckResult SuccessCheck(Homologation homologation, Standart standart)
+        private CheckResult CheckStandart(Standart standart)
+        {
+            var checkTime = DateTime.Now;
+
+            if (!(standart.StartDate < checkTime
+                && standart.EndDate > checkTime))
+            {
+                return FailedCheck();
+            }
+            
+            return SuccessCheck(null, standart, checkTime);
+        }
+
+        private CheckResult CheckHomologation(Homologation homologation)
+        {
+            var checkTime = DateTime.Now;
+
+            return FailedCheck();
+        }
+
+        private static CheckResult SuccessCheck(
+            Homologation homologation, 
+            Standart standart,
+            DateTime checkTime)
         {
             return new CheckResult
             {
                 ResultCode = ResultCode.Success,
-                CheckTime = DateTime.Now,
+                CheckTime = checkTime,
                 Homologation = homologation,
                 Standart = standart,
                 InternalId = ObjectId.GenerateNewId(),

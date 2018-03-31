@@ -25,7 +25,7 @@ namespace webapi.Controllers
         
         [HttpPost]
         [Route("")]
-        public async Task<CheckResult> CheckPost([FromBody] string str)
+        public async Task<CheckResult> CheckPost(string str)
         {
             return await _checkerService.Check(str);
         }

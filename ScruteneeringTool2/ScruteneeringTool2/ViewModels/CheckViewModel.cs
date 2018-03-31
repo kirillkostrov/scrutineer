@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Plugin.Media;
@@ -10,6 +11,9 @@ using Xamarin.Forms;
 
 using ScruteneeringTool2.Models;
 using ScruteneeringTool2.Views;
+
+using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
 
 namespace ScruteneeringTool2.ViewModels
 {
@@ -20,6 +24,8 @@ namespace ScruteneeringTool2.ViewModels
         public ICommand TakePictureCommand { get; }
 
         public ICommand PickFromGalleryCommand { get; }
+
+        public ICommand DoOCR { get; }
 
         private ImageSource _takenImage;
 
@@ -33,10 +39,20 @@ namespace ScruteneeringTool2.ViewModels
 
         private string _ocrtext;
 
+        private string _ocrrawtext { get; set; }
+
         public string OCRText
         {
             get => _ocrtext;
             set => SetProperty(ref _ocrtext, value);
+        }
+
+        private string _responseText;
+
+        public string ResponseText
+        {
+            get => _responseText;
+            set => SetProperty(ref _responseText, value);
         }
 
         public CheckViewModel()
@@ -45,17 +61,50 @@ namespace ScruteneeringTool2.ViewModels
 
             TakePictureCommand = new Command(TakePicture);
             PickFromGalleryCommand = new Command(PickFromGallery);
+            DoOCR = new Command(TryOCR);
 
 
-            //Items = new ObservableCollection<Item>();
-            //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            //{
-            //    var _item = item as Item;
-            //    Items.Add(_item);
-            //    await DataStore.AddItemAsync(_item);
-            //});
+        }
+
+        private async void TryOCR()
+        {
+            // KK
+            //var client = new VisionServiceClient("18b08c8bb71a4aae9ab8938cf1a43fea");
+            var client = new VisionServiceClient("18b08c8bb71a4aae9ab8938cf1a43fea", "https://westeurope.api.cognitive.microsoft.com/vision/v1.0");
+            // VK
+            //var client = new VisionServiceClient("f5071904cfd445dea680748c771f84d5");
+
+            using (var photoStream = new MemoryStream(_imageBytes))
+            {
+                try
+                {
+                    var result = await client.RecognizeTextAsync(photoStream);                    
+
+                    var sb1 = new StringBuilder();
+                    var sb = new StringBuilder();
+
+                    foreach (var region in result.Regions)
+                    {
+                        foreach (var line in region.Lines)
+                        {
+                            foreach (var word in line.Words)
+                            {
+                                sb.AppendLine(word.Text);
+                                sb1.Append(word.Text);
+                            }
+                        }
+                    }
+
+                    OCRText = sb.ToString();
+                    _ocrrawtext = sb1.ToString();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }           
         }
 
         private async void TakePicture()

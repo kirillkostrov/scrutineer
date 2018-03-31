@@ -10,8 +10,8 @@
     <ContentPage.Content>
         <StackLayout>
             <Image HeightRequest="240" Source="{Binding TakenImage}" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand"/>
-            <Editor x:Name="Editor" Text="{Binding OCRText}" Keyboard="Chat" VerticalOptions="FillAndExpand">
-            </Editor>
+            <Editor x:Name="Editor1" Text="{Binding OCRText}" Keyboard="Chat" VerticalOptions="FillAndExpand"/>
+            <Editor x:Name="Editor2" Text="{Binding ResponseText}" Keyboard="Chat" VerticalOptions="FillAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -39,11 +39,6 @@ namespace Services
                 ? _standartRepository.GetByCode(homologation.StandartId.ToString())
                 : _standartRepository.GetByCode(standartCode));
 
-            if (standart == null)
-            {
-                return FailedCheck();
-            }
-
             var timeZoneInfo = TimeZoneInfo.FromSerializedString(timeZone);
             if(timeZoneInfo == null)
             {
@@ -52,25 +47,30 @@ namespace Services
 
             var dateTimeNowClient = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
 
+            if (standart == null)
+            {
+                return FailedCheck(dateTimeNowClient);
+            }
+
             if(standart != null && (standart.EndDate <= dateTimeNowClient || standart.StartDate > dateTimeNowClient))
             {
-                return FailedCheck();
+                return FailedCheck(dateTimeNowClient);
             }
 
             if(homologation != null && homologation.HomologationItems.Any(x => x.EndDate <= dateTimeNowClient || x.StartDate > dateTimeNowClient))
             {
-                return WarningCheck(homologation, standart);
+                return WarningCheck(homologation, standart, dateTimeNowClient);
             }
 
-            return SuccessCheck(homologation, standart);
+            return SuccessCheck(homologation, standart, dateTimeNowClient);
         }
 
-        private static CheckResult SuccessCheck(Homologation homologation, Standart standart)
+        private static CheckResult SuccessCheck(Homologation homologation, Standart standart, DateTime checkTime)
         {
             return new CheckResult
             {
                 ResultCode = ResultCode.Success,
-                CheckTime = DateTime.Now,
+                CheckTime = checkTime,
                 Homologation = homologation,
                 Standart = standart,
                 InternalId = ObjectId.GenerateNewId(),
@@ -78,20 +78,20 @@ namespace Services
             };
         }
 
-        private static CheckResult FailedCheck() => new CheckResult
+        private static CheckResult FailedCheck(DateTime checkTime) => new CheckResult
         {
             ResultCode = ResultCode.Fail,
-            CheckTime = DateTime.Now,
+            CheckTime = checkTime,
             InternalId = ObjectId.GenerateNewId(),
             SessionId = Guid.NewGuid(),
         };
 
-        private static CheckResult WarningCheck(Homologation homologation, Standart standart)
+        private static CheckResult WarningCheck(Homologation homologation, Standart standart, DateTime checkTime)
         {
             return new CheckResult
             {
                 ResultCode = ResultCode.ExpiresSoon,
-                CheckTime = DateTime.Now,
+                CheckTime = checkTime,
                 Homologation = homologation,
                 Standart = standart,
                 InternalId = ObjectId.GenerateNewId(),

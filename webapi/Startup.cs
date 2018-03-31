@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models;
+using Services;
 
 namespace webapi
 {
@@ -32,6 +33,8 @@ namespace webapi
 
             services.AddTransient<IStandartRepository, StandartRepository>();
             services.AddTransient<IHomologationRepository, HomologationRepository>();
+
+            services.AddTransient<ICheckerService, CheckerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

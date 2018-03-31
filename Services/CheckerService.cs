@@ -7,7 +7,6 @@ using MongoDB.Bson;
 using Core.Entities;
 using Core.Helpers;
 using Core.Interfaces;
-using MongoDB.Bson;
 
 namespace Services
 {
@@ -69,7 +68,7 @@ namespace Services
         private async Task<Tuple<Standart, Homologation>> GetParseResulst(string rawRecognozedString)
         {
             CodeParser.TryParseStandartCode(rawRecognozedString, out var standartCode);
-            CodeParser.TryParseStandartCode(rawRecognozedString, out var homologationCode);
+            CodeParser.ParseHomologationCode(rawRecognozedString, out var homologationCode);
             
             return Tuple.Create<Standart, Homologation>(
                     await _standartRepository.GetByCode(standartCode),

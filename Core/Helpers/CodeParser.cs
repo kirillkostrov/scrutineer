@@ -11,9 +11,10 @@ namespace Core.Helpers
             return regexp.IsMatch(rawString);
         }
         
-        public static bool ParseHomologationCode(string rawString)
+        public static bool ParseHomologationCode(string rawString, out string homologationCode)
         {
             var regexp = new Regex(@"[a-zA-Z]{2,3}\.?\d{3}\.?\d{2}(-\w)?");
+            homologationCode = regexp.Match(rawString).Value;
             return regexp.IsMatch(rawString);
         }
     }

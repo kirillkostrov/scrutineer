@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Models;
+using Services;
 
 namespace Webapp
 {
@@ -23,6 +27,19 @@ namespace Webapp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString = Configuration
+                    .GetSection("MongoConnection:ConnectionString").Value;
+                options.Database = Configuration
+                    .GetSection("MongoConnection:Database").Value;
+            });
+
+            services.AddTransient<IStandartRepository, StandartRepository>();
+            services.AddTransient<IHomologationRepository, HomologationRepository>();
+
+            services.AddTransient<ICheckerService, CheckerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

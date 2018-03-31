@@ -57,7 +57,7 @@ namespace Infrastructure.Data
                 }
             );
         }
-        
+
         public async Task<Standart> GetByCode(string code)
         {
             return await ExecuteAndHandleException<Standart>.Execute(async () =>

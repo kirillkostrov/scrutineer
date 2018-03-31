@@ -10,21 +10,26 @@ namespace webapi.Controllers
     public class HomologationsController : Controller
     {
         private readonly IHomologationRepository _homologationRepository;
-        
+
         public HomologationsController(IHomologationRepository homologationRepository)
         {
             _homologationRepository = homologationRepository;
         }
-        
+
         [HttpGet]
-        public async Task<IEnumerable<Homologation>> Get() => await _homologationRepository.GetAll();
-        
-        
+        public async Task<IEnumerable<Homologation>> Get()
+        {
+            return await _homologationRepository.GetAll();
+        }
+
+
         [HttpPost]
-        public void Add([FromBody] Homologation homologation) => 
+        public void Add([FromBody] Homologation homologation)
+        {
             _homologationRepository.Add(new Homologation
             {
                 Code = homologation.Code
             });
+        }
     }
 }

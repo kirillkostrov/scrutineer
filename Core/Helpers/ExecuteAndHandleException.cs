@@ -18,8 +18,8 @@ namespace Core.Helpers
             }
         }
     }
-    
-    
+
+
     public static class ExecuteAndHandleException
     {
         public static async Task Execute(Func<Task> func)

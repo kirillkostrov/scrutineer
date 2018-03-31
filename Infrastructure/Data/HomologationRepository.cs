@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Helpers;
@@ -18,7 +19,7 @@ namespace Infrastructure.Data
         {
             _context = new Context(settings);
         }
-        
+
         public async Task<IEnumerable<Homologation>> GetAll()
         {
             return await ExecuteAndHandleException<IEnumerable<Homologation>>.Execute(async () =>
@@ -48,7 +49,7 @@ namespace Infrastructure.Data
         public Task<bool> Delete(string id)
         {
             // TODO: [IS] ...
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<Homologation> GetByCode(string homologationCode)

@@ -6,7 +6,7 @@ namespace Core.Helpers
     {
         public static ObjectId GetInternalId(string id)
         {
-            if(!ObjectId.TryParse(id, out var internalId))
+            if (!ObjectId.TryParse(id, out var internalId))
                 internalId = ObjectId.Empty;
             return internalId;
         }

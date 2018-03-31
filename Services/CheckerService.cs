@@ -12,7 +12,7 @@ namespace Services
         private readonly IStandartRepository _standartRepository;
 
         public CheckerService(
-            IStandartRepository standartRepository, 
+            IStandartRepository standartRepository,
             IHomologationRepository homologationRepository)
         {
             _standartRepository = standartRepository;
@@ -21,17 +21,14 @@ namespace Services
 
         public Task<CheckResult> Check(string rawRecognozedString)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<CheckResult> Check(string standartCode, string homologationCode)
         {
             var standart = await _standartRepository.GetByCode(standartCode);
             var homologation = await _homologationRepository.GetByCode(homologationCode);
-            if (standart == null && homologation == null)
-            {
-                return FailedCheck();
-            }
+            if (standart == null && homologation == null) return FailedCheck();
 
             return SuccessCheck(homologation, standart);
         }
@@ -49,12 +46,15 @@ namespace Services
             };
         }
 
-        private static CheckResult FailedCheck() => new CheckResult
+        private static CheckResult FailedCheck()
         {
-            ResultCode = ResultCode.Fail,
-            CheckTime = DateTime.Now,
-            InternalId = ObjectId.GenerateNewId(),
-            SessionId = Guid.NewGuid(),
-        };
+            return new CheckResult
+            {
+                ResultCode = ResultCode.Fail,
+                CheckTime = DateTime.Now,
+                InternalId = ObjectId.GenerateNewId(),
+                SessionId = Guid.NewGuid()
+            };
+        }
     }
 }

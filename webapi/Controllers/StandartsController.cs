@@ -10,23 +10,41 @@ namespace webapi.Controllers
     public class StandartsController : Controller
     {
         private readonly IStandartRepository _standartRepository;
+        private readonly IStandartService _standartService;
 
-        public StandartsController(IStandartRepository standartRepository)
+        public StandartsController(
+            IStandartRepository standartRepository,
+            IStandartService standartService)
         {
             _standartRepository = standartRepository;
+            _standartService = standartService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Standart>> Get() => await _standartRepository.GetAll();
-        
+        public async Task<IEnumerable<Standart>> Get()
+        {
+            return await _standartRepository.GetAll();
+        }
+
+        [HttpGet("list")]
+        public IEnumerable<NamedItem> GetAllList()
+        {
+            return _standartService.GetStandartsList();
+        }
+
         [HttpPost]
-        public void Add([FromBody] Standart standart) => 
+        public void Add([FromBody] Standart standart)
+        {
             _standartRepository.Add(new Standart
             {
                 Code = standart.Code
             });
+        }
 
         [HttpDelete("{id}")]
-        public void Delete(string id) => _standartRepository.Delete(id);
+        public void Delete(string id)
+        {
+            _standartRepository.Delete(id);
+        }
     }
 }

@@ -7,6 +7,6 @@
         L,
         XL,
         XXL,
-        XXXL,
+        XXXL
     }
 }

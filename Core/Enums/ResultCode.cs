@@ -4,6 +4,6 @@
     {
         Success,
         ExpireSoon,
-        Fail,
+        Fail
     }
 }

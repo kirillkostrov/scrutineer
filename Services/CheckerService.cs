@@ -24,9 +24,9 @@ namespace Services
             _homologationRepository = homologationRepository;
         }
 
-        public async Task<CheckResult> Check(string rawRecognozedString)
+        public async Task<CheckResult> Check(string rawRecognizedString)
         {
-            var isCorrectString = await GetParseResulst(rawRecognozedString);
+            var isCorrectString = await GetParseResult(rawRecognizedString);
             return isCorrectString.Item1 != null
                 ? new CheckResult{ResultCode = ResultCode.ExpiresSoon} 
                 : new CheckResult{ResultCode = ResultCode.Success};
@@ -66,10 +66,10 @@ namespace Services
             return SuccessCheck(homologation, standart);
         }
 
-        private async Task<Tuple<Standart, Homologation>> GetParseResulst(string rawRecognozedString)
+        private async Task<Tuple<Standart, Homologation>> GetParseResult(string rawRecognizedString)
         {
-            CodeParser.TryParseStandartCode(rawRecognozedString, out var standartCode);
-            CodeParser.TryParseStandartCode(rawRecognozedString, out var homologationCode);
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var standartCode);
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var homologationCode);
             
             return Tuple.Create<Standart, Homologation>(
                     await _standartRepository.GetByCode(standartCode),

@@ -25,13 +25,13 @@ namespace Services
 
         public async Task<CheckResult> Check(string rawRecognizedString)
         {
-            var isCorrectString = await GetParseResult(rawRecognizedString);
-            return isCorrectString.Item1 != null
-                ? new CheckResult{ResultCode = ResultCode.ExpiresSoon} 
-                : new CheckResult{ResultCode = ResultCode.Success};
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var standartCode);
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var homologationCode);
+
+            return await Check(standartCode, homologationCode, TimeZoneInfo.Local.ToSerializedString());
         }
 
-        public async Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone)
+        private async Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone)
         {
             var homologation = await _homologationRepository.GetByCode(homologationCode);
 
@@ -63,17 +63,6 @@ namespace Services
             }
 
             return SuccessCheck(homologation, standart);
-        }
-
-        private async Task<Tuple<Standart, Homologation>> GetParseResult(string rawRecognizedString)
-        {
-            CodeParser.TryParseStandartCode(rawRecognizedString, out var standartCode);
-            CodeParser.TryParseStandartCode(rawRecognizedString, out var homologationCode);
-            
-            return Tuple.Create<Standart, Homologation>(
-                    await _standartRepository.GetByCode(standartCode),
-                    await _homologationRepository.GetByCode(homologationCode)
-            );
         }
 
         private static CheckResult SuccessCheck(Homologation homologation, Standart standart)

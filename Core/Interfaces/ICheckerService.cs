@@ -7,6 +7,6 @@ namespace Core.Interfaces
     {
         Task<CheckResult> Check(string rawRecognozedString);
         
-        Task<CheckResult> Check(string standartCode, string homologationCode);
+        Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone);
     }
 }

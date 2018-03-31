@@ -25,24 +25,19 @@ namespace Services
 
         public async Task<CheckResult> Check(string rawRecognizedString)
         {
-            var isCorrectString = await GetParseResult(rawRecognizedString);
-            return isCorrectString.Item1 != null
-                ? new CheckResult{ResultCode = ResultCode.ExpiresSoon} 
-                : new CheckResult{ResultCode = ResultCode.Success};
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var standartCode);
+            CodeParser.TryParseStandartCode(rawRecognizedString, out var homologationCode);
+
+            return await Check(standartCode, homologationCode, TimeZoneInfo.Local.ToSerializedString());
         }
 
-        public async Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone)
+        private async Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone)
         {
             var homologation = await _homologationRepository.GetByCode(homologationCode);
 
             var standart = await (homologation != null
                 ? _standartRepository.GetByCode(homologation.StandartId.ToString())
                 : _standartRepository.GetByCode(standartCode));
-
-            if (standart == null)
-            {
-                return FailedCheck(dateTimeNowClient);
-            }
 
             var timeZoneInfo = TimeZoneInfo.FromSerializedString(timeZone);
             if(timeZoneInfo == null)
@@ -51,6 +46,11 @@ namespace Services
             }
 
             var dateTimeNowClient = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+
+            if (standart == null)
+            {
+                return FailedCheck(dateTimeNowClient);
+            }
 
             if(standart != null && (standart.EndDate <= dateTimeNowClient || standart.StartDate > dateTimeNowClient))
             {
@@ -63,17 +63,6 @@ namespace Services
             }
 
             return SuccessCheck(homologation, standart, dateTimeNowClient);
-        }
-
-        private async Task<Tuple<Standart, Homologation>> GetParseResult(string rawRecognizedString)
-        {
-            CodeParser.TryParseStandartCode(rawRecognizedString, out var standartCode);
-            CodeParser.TryParseStandartCode(rawRecognizedString, out var homologationCode);
-            
-            return Tuple.Create<Standart, Homologation>(
-                    await _standartRepository.GetByCode(standartCode),
-                    await _homologationRepository.GetByCode(homologationCode)
-            );
         }
 
         private static CheckResult SuccessCheck(Homologation homologation, Standart standart, DateTime checkTime)

@@ -30,10 +30,9 @@ namespace Webapp
             
             services.Configure<Settings>(options =>
             {
-                options.ConnectionString = Configuration
-                    .GetSection("MongoConnection:ConnectionString").Value;
-                options.Database = Configuration
-                    .GetSection("MongoConnection:Database").Value;
+            
+                options.ConnectionString = Configuration["MongoConnection:ConnectionString"];
+                options.Database = Configuration["MongoConnection:Database"];
             });
 
             services.AddTransient<IStandartRepository, StandartRepository>();
@@ -47,6 +46,7 @@ namespace Webapp
         {
             if (env.IsDevelopment())
             {
+                env.ge
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {

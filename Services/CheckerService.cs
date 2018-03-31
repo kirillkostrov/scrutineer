@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+
+using MongoDB.Bson;
+
 using Core.Entities;
 using Core.Interfaces;
-using MongoDB.Bson;
 
 namespace Services
 {
@@ -19,18 +22,40 @@ namespace Services
             _homologationRepository = homologationRepository;
         }
 
-        public Task<CheckResult> Check(string rawRecognozedString)
+        public Task<CheckResult> Check(string rawRecognizedString)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<CheckResult> Check(string standartCode, string homologationCode)
+        public async Task<CheckResult> Check(string standartCode, string homologationCode, string timeZone)
         {
-            var standart = await _standartRepository.GetByCode(standartCode);
             var homologation = await _homologationRepository.GetByCode(homologationCode);
-            if (standart == null && homologation == null)
+
+            var standart = await (homologation != null
+                ? _standartRepository.GetByCode(homologation.StandartId.ToString())
+                : _standartRepository.GetByCode(standartCode));
+
+            if (standart == null)
             {
                 return FailedCheck();
+            }
+
+            var timeZoneInfo = TimeZoneInfo.FromSerializedString(timeZone);
+            if(timeZoneInfo == null)
+            {
+                timeZoneInfo = TimeZoneInfo.Utc;
+            }
+
+            var dateTimeNowClient = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneInfo);
+
+            if(standart != null && (standart.EndDate <= dateTimeNowClient || standart.StartDate > dateTimeNowClient))
+            {
+                return FailedCheck();
+            }
+
+            if(homologation != null && homologation.HomologationItems.Any(x => x.EndDate <= dateTimeNowClient || x.StartDate > dateTimeNowClient))
+            {
+                return WarningCheck(homologation, standart);
             }
 
             return SuccessCheck(homologation, standart);
@@ -56,5 +81,18 @@ namespace Services
             InternalId = ObjectId.GenerateNewId(),
             SessionId = Guid.NewGuid(),
         };
+
+        private static CheckResult WarningCheck(Homologation homologation, Standart standart)
+        {
+            return new CheckResult
+            {
+                ResultCode = ResultCode.ExpiresSoon,
+                CheckTime = DateTime.Now,
+                Homologation = homologation,
+                Standart = standart,
+                InternalId = ObjectId.GenerateNewId(),
+                SessionId = Guid.NewGuid()
+            };
+        }
     }
 }

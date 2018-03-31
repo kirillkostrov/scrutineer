@@ -17,9 +17,16 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Standart>> Get()
-        {
-            return await _standartRepository.GetAll();
-        }
+        public async Task<IEnumerable<Standart>> Get() => await _standartRepository.GetAll();
+        
+        [HttpPost]
+        public void Add([FromBody] Standart standart) => 
+            _standartRepository.Add(new Standart
+            {
+                Code = standart.Code
+            });
+
+        [HttpDelete("{id}")]
+        public void Delete(string id) => _standartRepository.Delete(id);
     }
 }

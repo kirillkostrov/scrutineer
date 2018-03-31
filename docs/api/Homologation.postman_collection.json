@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "4ec2b973-dbff-4863-b81a-704cce290e89",
+		"name": "Homologation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddHomologation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Code\": \"(╮°-°)╮┳━━┳\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/homologations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"homologations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllHomologations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5000/api/homologations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"homologations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

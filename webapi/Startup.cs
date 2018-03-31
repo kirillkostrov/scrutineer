@@ -31,6 +31,7 @@ namespace webapi
             });
 
             services.AddTransient<IStandartRepository, StandartRepository>();
+            services.AddTransient<IHomologationRepository, HomologationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Microsoft.Extensions.Options;
 using Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infrastructure.Data
@@ -17,5 +18,8 @@ namespace Infrastructure.Data
 
         public IMongoCollection<Standart> Standarts =>
             _database.GetCollection<Standart>("Standart");
+
+        public IMongoCollection<Homologation> Homologations =>
+            _database.GetCollection<Homologation>("Homologation");
     }
 }

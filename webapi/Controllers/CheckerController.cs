@@ -19,7 +19,7 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<CheckResult> Check([FromBody] string standartCode)
         {
-            return await _checkerService.Check(standartCode, string.Empty);
+            return await _checkerService.Check(standartCode);
         }
     }
 }

@@ -16,6 +16,6 @@
 
         public int[] IncompatibleHomologationsIds { get; set; }
 
-        public HomologationItem[] HomologationItem { get; set; }
+        public HomologationItem[] HomologationItems { get; set; }
     }
 }

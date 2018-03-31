@@ -34,7 +34,7 @@ namespace ScruteneeringTool2.Views
 
 	    void CheckLabel_Clicked(object sender, EventArgs e)
 	    {
-
+            viewModel.DoOCR.Execute(null);
 	    }
 
         protected override void OnAppearing()

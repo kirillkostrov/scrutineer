@@ -7,7 +7,6 @@ using MongoDB.Bson;
 using Core.Entities;
 using Core.Helpers;
 using Core.Interfaces;
-using MongoDB.Bson;
 
 namespace Services
 {

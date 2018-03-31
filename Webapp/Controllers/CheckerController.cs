@@ -16,13 +16,15 @@ namespace webapi.Controllers
             _checkerService = checkerService;
         }
 
-        [HttpGet("check")]
+        [HttpGet]
+        [Route("check")]
         public async Task<CheckResult> Check(string str)
         {
             return await _checkerService.Check(str);
         }
         
-        [HttpPost("check")]
+        [HttpPost]
+        [Route("")]
         public async Task<CheckResult> CheckPost([FromBody] string str)
         {
             return await _checkerService.Check(str);

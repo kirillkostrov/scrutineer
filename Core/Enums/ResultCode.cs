@@ -3,7 +3,7 @@
     public enum ResultCode
     {
         Success,
-        ExpireSoon,
+        ExpiresSoon,
         Fail,
     }
 }

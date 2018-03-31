@@ -23,7 +23,11 @@ namespace webapi.Controllers
         public void Add([FromBody] Standart standart) => 
             _standartRepository.Add(new Standart
             {
-                Code = standart.Code
+                Code = standart.Code,
+                Description = standart.Description,
+                EndDate = standart.EndDate,
+                Name = standart.Name,
+                StartDate = standart.StartDate,
             });
 
         [HttpDelete("{id}")]

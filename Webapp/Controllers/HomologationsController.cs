@@ -24,7 +24,10 @@ namespace webapi.Controllers
         public void Add([FromBody] Homologation homologation) => 
             _homologationRepository.Add(new Homologation
             {
-                Code = homologation.Code
+                Code = homologation.Code,
+                Name = homologation.Name,
+                HomologationItems = homologation.HomologationItems,
+                Manufacturer = homologation.Manufacturer,
             });
     }
 }

@@ -3,8 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Users\Ilay\.nuget\packages\mongodb.bson\2.5.0\lib\netstandard1.5\MongoDB.Bson.dll</HintPath>
-    </Reference>
+    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
   </ItemGroup>
 </Project>

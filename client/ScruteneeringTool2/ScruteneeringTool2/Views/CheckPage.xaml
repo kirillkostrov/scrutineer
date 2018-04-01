@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ScruteneeringTool2.Views.CheckPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Take Photo" Clicked="TakePhoto_Clicked" />
+        <ToolbarItem Text="Pick From Gallery" Clicked="PickPhoto_Clicked" />
+        <ToolbarItem Text="Check Label" Clicked="CheckLabel_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Image HeightRequest="240" Source="{Binding TakenImage}" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand"/>
+            <Editor x:Name="Editor1" Text="{Binding OCRText}" Keyboard="Chat" VerticalOptions="FillAndExpand"/>
+            <Editor x:Name="Editor2" Text="{Binding ResponseText}" Keyboard="Chat" VerticalOptions="FillAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

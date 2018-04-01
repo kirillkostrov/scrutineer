@@ -37,6 +37,9 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
+  <PropertyGroup>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
